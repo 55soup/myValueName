@@ -37,18 +37,20 @@ export default function Home() {
   })
 
   // db연동
-  const [faqs, setFaqs] = useState([]);
+  const [dbdatas, setDBDatas] = useState([]);
 
-  // useEffect(()=>{
-  //   const fetchFAQs = async () => {
-  //     const res = await fetch('./api/faqs.js');
-  //     const {faqsList} = await res.json();
-  //     setFaqs(faqsList);
-  //   }
+  useEffect(()=>{
+    const fetchDB = async () => {
+      const res = await fetch('/api/db');
+      const {dbList} = await res.json();
+      setDBDatas(dbList);
+      console.log(dbdatas); // undefined
+    }
 
-  //   fetchFAQs();
-  // })
+    fetchDB();
+  }, []);
   /////////////////////////////////
+
   return (
     <Container>
       <LeftSidebar isOpen={isOpen}>
@@ -71,21 +73,17 @@ export default function Home() {
             placeholder="변수명 추천을 받아보세요!"
             style={{width: '50rem', fontSize: '2rem', textAlign: 'center'}}
             // className="w-full max-w-md border border-gray-300 rounded mb-8 shadow-xl p-2"
-            value={value}
-            onChange={handleChangeValue}
+            value={input}
+            onChange={handleInputChange}
           />
           <button type="submit">제출</button>
         </form>
         <Response>
           <img src="/imgs/chatgpt.png" alt="chat gpt" style={{width: '5rem', height: '5rem'}}/>
             <output style={{fontSize: '2rem'}}>{completion} 어떠세요?</output>
-            {/* <button disabled={isLoading} type="submit">
-              Send
-            </button> */}
         </Response>
       </RightSidebar>
     </Container>
-    
   );
 }
 
