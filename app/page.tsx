@@ -4,6 +4,7 @@ import { useSpeechRecognition } from "react-speech-kit";
 import styled from "styled-components";
 import { useCompletion } from "ai/react"
 import { BsMenuApp } from "react-icons/bs";
+import Loading from "./loading";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -40,21 +41,24 @@ export default function Home() {
   const [dbdatas, setDBDatas] = useState([]);
 
   useEffect(()=>{
-    const fetchDB = async () => {
-      const res = await fetch('/api/db');
-      const {dbList} = await res.json();
-      setDBDatas(dbList);
-      console.log(dbdatas); // undefined
-    }
-
-    fetchDB();
+    fetch('/api/db')
+    .then((res) => res.json())
+    .then((data) => {setDBDatas(data)});
   }, []);
   /////////////////////////////////
+
+  const [listClick , setListClick] = useState(null);
 
   return (
     <Container>
       <LeftSidebar isOpen={isOpen}>
-        
+      {dbdatas.map((a, i) => {
+          return(
+            <List key={i} onClick={() => {setListClick(a)}}>
+              <div>{a.CONTENT}</div>
+            </List>
+          );
+        })}
       </LeftSidebar>
       <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><BsMenuApp size={30}/></HamburgerBtn>
       <RightSidebar isOpen={isOpen}>
@@ -82,6 +86,12 @@ export default function Home() {
           <img src="/imgs/chatgpt.png" alt="chat gpt" style={{width: '5rem', height: '5rem'}}/>
             <output style={{fontSize: '2rem'}}>{completion} 어떠세요?</output>
         </Response>
+        { listClick && 
+          <>
+            <div>{listClick.CONTENT}</div>
+            <div>{listClick.ANSWER}</div>
+          </>
+        }
       </RightSidebar>
     </Container>
   );
@@ -111,8 +121,8 @@ const HamburgerBtn = styled.button`
 `
 const LeftSidebar = styled.div`
   float: left;
-  width: 20%;
-  height: 100vh;
+  width: 20%; height: 100vh;
+  padding: 7rem 0 0 2rem;
   background: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-top-right-radius: 2rem;
@@ -138,3 +148,7 @@ const Response = styled.div`
   gap: 5rem;
   align-items: center;
 `
+const List = styled.div`
+  margin: 1rem 0;
+  cursor: pointer;
+`;

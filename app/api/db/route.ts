@@ -24,3 +24,24 @@ export async function GET() {
         }
     }
 }
+
+export async function POST(request: Request) {
+    let connection
+    try {
+        connection = await oracledb.getConnection(dbconfig);
+        // const query = `INSERT INTO `;
+        // const result = await connection.execute(query);
+        return NextResponse.json(request.body);
+    } catch (error) {
+        console.log("dbtest error")
+        console.log(error)
+    } finally {
+        if (connection) {
+            try {
+                await connection.close()
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+}
