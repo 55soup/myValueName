@@ -3,39 +3,37 @@ import React, { useState, useEffect } from "react";
 import { useSpeechRecognition } from "react-speech-kit";
 import styled from "styled-components";
 import { useCompletion } from "ai/react"
-import { BsMenuApp } from "react-icons/bs";
+import { RxHamburgerMenu } from "react-icons/rx"; 
 import Loading from "./loading";
 
 export default function Home() {
-  const [value, setValue] = useState("");
+  
+    // chat gpt
+    const {
+      completion,
+      input,
+      isLoading,
+      handleInputChange,
+      handleSubmit,
+      setInput // input 조작
+    } = useCompletion({
+      api: '/api'
+    })
+
   const [isOpen, setIsOpen] = useState(false); // 햄버거 메뉴바 state
 
   const { listen, listening, stop } = useSpeechRecognition({
     onResult: (result: any) => {
-      // 음성인식 결과가 value 상태값으로 할당됩니다.
-      setValue(result);
+      // 음성인식 결과가 input 상태값으로 할당됩니다.
+      setInput(result);
     },
   });
-  const handleChangeValue = (e) => {
-    setValue(e.target.value);
-  }
 
   // toggle버튼 관리
   const [toggle, setToggle] = useState(false);
   const clickedToggle = () => {
     setToggle((prev) => !prev);
   };
-
-  // chat gpt
-  const {
-    completion,
-    input,
-    isLoading,
-    handleInputChange,
-    handleSubmit
-  } = useCompletion({
-    api: '/api'
-  })
 
   // db연동
   const [dbdatas, setDBDatas] = useState([]);
@@ -47,7 +45,7 @@ export default function Home() {
   }, []);
   /////////////////////////////////
 
-  const [listClick , setListClick] = useState(null);
+  const [listClick , setListClick] = useState(null); // 답변 저장 list 클릭시 저장된 결과가 나옴
 
   return (
     <Container>
@@ -60,7 +58,7 @@ export default function Home() {
           );
         })}
       </LeftSidebar>
-      <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><BsMenuApp size={30}/></HamburgerBtn>
+      <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><RxHamburgerMenu size={30}/></HamburgerBtn>
       <RightSidebar isOpen={isOpen}>
         <div>{listening && 'REC'}</div>
         <RecordButton
