@@ -4,6 +4,8 @@ import { useSpeechRecognition } from "react-speech-kit";
 import styled from "styled-components";
 import { useCompletion } from "ai/react"
 import { RxHamburgerMenu } from "react-icons/rx"; 
+import { AiOutlineUser } from "react-icons/ai";
+import Link from 'next/link'
 import Loading from "./loading";
 
 export default function Home() {
@@ -42,7 +44,20 @@ export default function Home() {
     fetch('/api/db')
     .then((res) => res.json())
     .then((data) => {setDBDatas(data)});
-  }, []);
+  }, [dbdatas]);
+
+  const insertData = () => {
+    if(completion!=''){
+      fetch('/api/db', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ user_id:2, content: input, answer: completion, dates: new Date().toDateString() }),
+      })
+      .then((res) => res.json())
+    }
+  }
   /////////////////////////////////
 
   const [listClick , setListClick] = useState(null); // 답변 저장 list 클릭시 저장된 결과가 나옴
@@ -53,12 +68,13 @@ export default function Home() {
       {dbdatas.map((a, i) => {
           return(
             <List key={i} onClick={() => {setListClick(a)}}>
-              <div>{a.CONTENT}</div>
+              <div>{a.CONTENT.substring(0, 20)}...</div>
             </List>
           );
         })}
       </LeftSidebar>
       <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><RxHamburgerMenu size={30}/></HamburgerBtn>
+      <Link href="/login"><AiOutlineUser size={30} style={{position: 'relative', float: 'right', margin: '2vw 4vw'}} /></Link>
       <RightSidebar isOpen={isOpen}>
         <div>{listening && 'REC'}</div>
         <RecordButton
@@ -78,11 +94,12 @@ export default function Home() {
             value={input}
             onChange={handleInputChange}
           />
-          <button type="submit">제출</button>
+          <button type="submit" onClick={insertData}>제출</button>
         </form>
         <Response>
           <img src="/imgs/chatgpt.png" alt="chat gpt" style={{width: '5rem', height: '5rem'}}/>
-            <output style={{fontSize: '2rem'}}>{completion} 어떠세요?</output>
+            <output style={{fontSize: '2rem'}}>{completion} 어떠세요?</output> 
+            {/* 변수명 클릭시 클립보드로 복사 */}
         </Response>
         { listClick && 
           <>
