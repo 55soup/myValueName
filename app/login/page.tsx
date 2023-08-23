@@ -1,14 +1,17 @@
 "use client"
 import styled from "styled-components";
+import Router from "next/router";
 
 export default function Login() {
     return(
-        <Container>
-            <h1>various-variable : Chat GPT가 지어주는 변수명</h1>
-            <Input placeholder="닉네임"/>
-            <Input type="password" placeholder="비밀번호"/>
-            <LoginBtn>로그인</LoginBtn>
-        </Container>
+        <form action="/api/db/users" method="post">
+            <Container>
+                <h1>various-variable : Chat GPT가 지어주는 변수명</h1>
+                <Input name="email" placeholder="이메일" required/>
+                <Input name="password" type="password" placeholder="비밀번호" required/>
+                <LoginBtn>로그인</LoginBtn>
+            </Container>
+        </form>
     );
 }
 
