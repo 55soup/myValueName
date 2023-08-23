@@ -6871,10 +6871,10 @@ optionator@^0.9.1:
     type-check "^0.4.0"
     word-wrap "^1.2.3"
 
-oracledb@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/oracledb/-/oracledb-6.0.0.tgz"
-  integrity sha512-GDCXmfkNqKQ7FNEuvPFuxOiW0KLgt7OfhTKejgxZD0hhAMbq1snAiWtrCkr2I2jcZFolSOb/r+zIkc/KFdQ2Mg==
+oracledb@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.npmjs.org/oracledb/-/oracledb-6.0.3.tgz"
+  integrity sha512-szsaTgEcVpmGwi5sCHLXvvpoL5ZJIE69wSOBpclsGO5XX6QMce6KRr+R+t68ihns+8MV4A0J4oeR6efCfxScrg==
 
 p-limit@^2.0.0:
   version "2.3.0"

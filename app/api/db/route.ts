@@ -9,7 +9,7 @@ export async function GET() {
     let connection
     try {
         connection = await oracledb.getConnection(dbconfig);
-        const query = `SELECT * FROM GPT_QUESTIONS`;
+        const query = `SELECT * FROM GPT_QUESTIONS ORDER BY Q_ID`;
         const result = await connection.execute(query);
         return NextResponse.json(result.rows);
     } catch (error) {
