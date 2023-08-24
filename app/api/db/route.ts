@@ -9,16 +9,16 @@ async function connectionDB(query:string, bindData:any = undefined) {
     let connection, result;
     try {
         connection = await oracledb.getConnection(dbconfig);
-        if(bindData) // sql문에 넣어야할 데이터가 있다면
+        if(bindData){ // sql문에 넣어야할 데이터가 있다면
             result = await connection.execute(query, bindData, (err:any, result:any) => {
                 if(err) console.error(err);
                 else return ;
             });
-        else
+            return NextResponse.json(bindData);
+        }else{
             result = await connection.execute(query);
-        
-        //return NextResponse.json(request.body);
-        return NextResponse.json(result.rows);
+            return NextResponse.json(result.rows);
+        }
     } catch (error) {
         console.log("dbtest error")
         console.log(error)
@@ -34,9 +34,8 @@ async function connectionDB(query:string, bindData:any = undefined) {
 }
 
 export async function GET() {
-    const query = `SELECT * FROM GPT_QUESTIONS ORDER BY Q_ID`;
+    const query:string = `SELECT * FROM GPT_QUESTIONS ORDER BY Q_ID`;
     return connectionDB(query);
-
 }
 
 export async function POST(request: Request) {
@@ -52,12 +51,25 @@ export async function POST(request: Request) {
 
     const query = `INSERT INTO "SUNJO"."GPT_QUESTIONS" (USER_ID, CONTENT, ANSWER, DATES) VALUES (:user_id, :content, :answer, :dates)`
     connectionDB(query, bindData);
+    return NextResponse.json(bodyData);
 }
 
 export async function PATCH(request: Request){
-    
+    // 수정할 내용 가져오기, 질문 아이디
+    const bodyData = await request.json();
+
+    const bindData:any = [bodyData.content, bodyData.q_id];
+    const query:string = `UPDATE gpt_questions SET content=:content WHERE Q_ID=:q_id`;
+    connectionDB(query, bindData);
+    return NextResponse.json({});
 }
 
 export async function DELETE(request: Request){
-    
+    // 삭제할 질문 아이디 가져오기
+    const bodyData = await request.json();
+
+    const bindData:any = [bodyData.q_id];
+    const query:string = `DELETE FROM gpt_questions WHERE Q_ID=:q_id`;
+    connectionDB(query, bindData);
+    return NextResponse.json({});
 }

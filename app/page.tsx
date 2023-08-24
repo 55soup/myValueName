@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useCompletion } from "ai/react"
 import { RxHamburgerMenu } from "react-icons/rx"; 
 import { AiOutlineUser } from "react-icons/ai";
+import { BsPencil, BsTrash3 } from "react-icons/bs";
 import Link from 'next/link'
 import Loading from "./loading";
 
@@ -58,6 +59,29 @@ export default function Home() {
       .then((res) => res.json())
     }
   }
+
+  const updateData = (q_id:number) => {
+    let content = prompt('수정할 내용을 입력해주세요.');
+    fetch('/api/db', {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ content : content, q_id : q_id }),
+    })
+    .then((res) => res.json())
+  }
+
+  const deleteData = (q_id:number) => {
+    fetch('/api/db', {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ q_id : q_id }),
+    })
+    .then((res) => res.json())
+  }
   /////////////////////////////////
 
   const [listClick , setListClick] = useState(null); // 답변 저장 list 클릭시 저장된 결과가 나옴
@@ -65,10 +89,14 @@ export default function Home() {
   return (
     <Container>
       <LeftSidebar isOpen={isOpen}>
-      {dbdatas.map((a, i) => {
+      {dbdatas.map((dbdata:any, i:number) => {
           return(
-            <List key={i} onClick={() => {setListClick(a)}}>
-              <div>{a.CONTENT.substring(0, 20)}...</div>
+            <List key={i}>
+              <div onClick={() => {setListClick(dbdata); console.log(dbdata.Q_ID)}}>{dbdata.CONTENT.substring(0, 20)}...</div>
+              <div style={{display: 'flex', gap: '1rem'}}>
+                <button onClick={() => {updateData(dbdata.Q_ID)}}><BsPencil /></button>
+                <button onClick={() => {deleteData(dbdata.Q_ID)}}><BsTrash3 /></button>
+              </div>
             </List>
           );
         })}
@@ -165,5 +193,6 @@ const Response = styled.div`
 `
 const List = styled.div`
   margin: 1rem 0;
+  position: relative;
   cursor: pointer;
 `;
