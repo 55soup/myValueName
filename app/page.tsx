@@ -90,8 +90,8 @@ export default function Home() {
     <Container>
       <LeftSidebar isOpen={isOpen}>
       {dbdatas.map((dbdata:any, i:number) => {
-          return(
-            <List key={i}>
+        return(
+          <List key={i}>
               <div onClick={() => {setListClick(dbdata); console.log(dbdata.Q_ID)}}>
                 {dbdata.CONTENT.length > 20 ? `${dbdata.CONTENT.substring(0, 20)}...` : dbdata.CONTENT}
               </div>
@@ -106,6 +106,7 @@ export default function Home() {
       <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><RxHamburgerMenu size={30}/></HamburgerBtn>
       <Link href="/login"><AiOutlineUser size={30} style={{position: 'relative', float: 'right', margin: '2vw 4vw'}} /></Link>
       <RightSidebar isOpen={isOpen}>
+        <img src={"/imgs/logo-big.png"} style={{position: 'absolute', top: 0}} width={250}/>
         <div>{listening && 'REC'}</div>
         <RecordButton
           onClick={() => {
@@ -117,9 +118,8 @@ export default function Home() {
           🎤
         </RecordButton>
         <form onSubmit={handleSubmit}>
-          <input
+          <ChatInput
             placeholder="변수명 추천을 받아보세요!"
-            style={{width: '50rem', fontSize: '2rem', textAlign: 'center'}}
             // className="w-full max-w-md border border-gray-300 rounded mb-8 shadow-xl p-2"
             value={input}
             onChange={handleInputChange}
@@ -185,9 +185,11 @@ const RecordButton = styled.button`
   transition: 0.2s;
   border: ${(props) => (props.toggle ? "none" : "solid 3px #d7d7d7")};
 `;
-const SpeechText = styled.div`
-  font-size: 5rem;
-`
+const ChatInput = styled.input`
+  width: 50rem; 
+  font-size: 2rem;
+  text-align: center;
+`;
 const Response = styled.div`
   display: flex;
   gap: 5rem;

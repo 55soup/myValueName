@@ -1,3 +1,7 @@
 export default function Loading():JSX.Element {
-    return <p>Loading...</p>;
+    return (
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <img src={"/imgs/logo.png"} />
+        </div>
+    )
 }

@@ -6,7 +6,8 @@ export default function Login() {
     return(
         <form action="/api/db/users" method="post">
             <Container>
-                <h1>various-variable : Chat GPT가 지어주는 변수명</h1>
+                {/* <h1>various-variable : Chat GPT가 지어주는 변수명</h1> */}
+                <img src={"/imgs/logo-big.png"} width={200} />
                 <Input name="email" placeholder="이메일" required/>
                 <Input name="password" type="password" placeholder="비밀번호" required/>
                 <LoginBtn>로그인</LoginBtn>
