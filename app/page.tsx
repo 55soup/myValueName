@@ -60,14 +60,14 @@ export default function Home() {
     }
   }
 
-  const updateData = (q_id:number) => {
-    let content = prompt('수정할 내용을 입력해주세요.');
+  const updateData = (content:string, q_id:number) => {
+    let new_content = prompt('수정할 내용을 입력해주세요.', content);
     fetch('/api/db', {
       method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify({ content : content, q_id : q_id }),
+      body: JSON.stringify({ content : new_content, q_id : q_id }),
     })
     .then((res) => res.json())
   }
@@ -92,9 +92,11 @@ export default function Home() {
       {dbdatas.map((dbdata:any, i:number) => {
           return(
             <List key={i}>
-              <div onClick={() => {setListClick(dbdata); console.log(dbdata.Q_ID)}}>{dbdata.CONTENT.substring(0, 20)}...</div>
+              <div onClick={() => {setListClick(dbdata); console.log(dbdata.Q_ID)}}>
+                {dbdata.CONTENT.length > 20 ? `${dbdata.CONTENT.substring(0, 20)}...` : dbdata.CONTENT}
+              </div>
               <div style={{display: 'flex', gap: '1rem'}}>
-                <button onClick={() => {updateData(dbdata.Q_ID)}}><BsPencil /></button>
+                <button onClick={() => {updateData(dbdata.CONTENT, dbdata.Q_ID)}}><BsPencil /></button>
                 <button onClick={() => {deleteData(dbdata.Q_ID)}}><BsTrash3 /></button>
               </div>
             </List>
