@@ -1,5 +1,10 @@
+import {GlobalStyle} from './global-style';
+
 function App() {
-  return <div>하이</div>;
+  <>
+    <GlobalStyle />
+    <div>안녕</div>
+  </>
 }
 
 export default App;

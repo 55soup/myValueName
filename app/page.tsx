@@ -23,7 +23,7 @@ export default function Home() {
       api: '/api'
     })
 
-  const [isOpen, setIsOpen] = useState(false); // 햄버거 메뉴바 state
+  const [isOpen, setIsOpen] = useState<boolean>(false); // 햄버거 메뉴바 state
 
   const { listen, listening, stop } = useSpeechRecognition({
     onResult: (result: any) => {
@@ -33,7 +33,7 @@ export default function Home() {
   });
 
   // toggle버튼 관리
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState<boolean>(false);
   const clickedToggle = () => {
     setToggle((prev) => !prev);
   };
@@ -84,7 +84,11 @@ export default function Home() {
   }
   /////////////////////////////////
 
-  const [listClick , setListClick] = useState(null); // 답변 저장 list 클릭시 저장된 결과가 나옴
+  interface QuestionList{
+    CONTENT: string,
+    ANSWER: string
+  }
+  const [listClick , setListClick] = useState<QuestionList>({CONTENT: '', ANSWER: ''}); // 답변 저장 list 클릭시 저장된 결과가 나옴
 
   return (
     <Container>
@@ -147,7 +151,7 @@ const Container = styled.div`
   overflow: hidden;
   background: white;
 `
-const RightSidebar = styled.div`
+const RightSidebar = styled.div<{ isOpen: boolean }>`
   display: flex;
   width: ${props => props.isOpen ? '70%' : '50%' };
   height: 100vh;
@@ -164,7 +168,7 @@ const HamburgerBtn = styled.button`
   left: 2rem;
   top: 2rem;
 `
-const LeftSidebar = styled.div`
+const LeftSidebar = styled.div<{ isOpen: boolean }>`
   float: left;
   width: 20%; height: 100vh;
   padding: 7rem 0 0 2rem;
@@ -176,7 +180,7 @@ const LeftSidebar = styled.div`
   transition: ease 0.2s;
   // display: ${(props) => (props.isOpen ? 'block' : 'none')};
 `;
-const RecordButton = styled.button`
+const RecordButton = styled.button<{ toggle: boolean }>`
   width: 5rem;
   height: 5rem;
   background-color: ${(props) => (props.toggle ? "red" : "none")};
