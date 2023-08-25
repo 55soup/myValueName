@@ -7,7 +7,6 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { AiOutlineUser } from "react-icons/ai";
 import { BsPencil, BsTrash3 } from "react-icons/bs";
 import Link from 'next/link'
-import Loading from "./loading";
 
 export default function Home() {
   
@@ -60,6 +59,12 @@ export default function Home() {
     }
   }
 
+  const handleEnterDownInsert = (e:any) => {
+    if (e.key === 'Enter') {
+      insertData(); // Enter 입력이 되면 클릭 이벤트 실행
+    }
+  };
+
   const updateData = (content:string, q_id:number) => {
     let new_content = prompt('수정할 내용을 입력해주세요.', content);
     fetch('/api/db', {
@@ -73,14 +78,17 @@ export default function Home() {
   }
 
   const deleteData = (q_id:number) => {
-    fetch('/api/db', {
-      method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({ q_id : q_id }),
-    })
-    .then((res) => res.json())
+    let reallyDelete = confirm("정말 삭제 하시겠습니까?");
+    if(reallyDelete){
+      fetch('/api/db', {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ q_id : q_id }),
+      })
+      .then((res) => res.json())
+    }
   }
   /////////////////////////////////
 
@@ -89,20 +97,25 @@ export default function Home() {
     ANSWER: string
   }
   const [listClick , setListClick] = useState<QuestionList>({CONTENT: '', ANSWER: ''}); // 답변 저장 list 클릭시 저장된 결과가 나옴
+  const [hover, setHover] = useState<number>(); // list hover시 상태관리
 
   return (
     <Container>
       <LeftSidebar isOpen={isOpen}>
       {dbdatas.map((dbdata:any, i:number) => {
         return(
-          <List key={i}>
+          <List key={i}  
+            onMouseEnter={() => setHover(i)}
+            onMouseLeave={() => setHover(-1)}>
               <div onClick={() => {setListClick(dbdata); console.log(dbdata.Q_ID)}}>
                 {dbdata.CONTENT.length > 20 ? `${dbdata.CONTENT.substring(0, 20)}...` : dbdata.CONTENT}
               </div>
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <button onClick={() => {updateData(dbdata.CONTENT, dbdata.Q_ID)}}><BsPencil /></button>
-                <button onClick={() => {deleteData(dbdata.Q_ID)}}><BsTrash3 /></button>
-              </div>
+              { hover === i && 
+                <div style={{display: 'flex', gap: '1rem'}}>
+                  <button onClick={() => {updateData(dbdata.CONTENT, dbdata.Q_ID)}}><BsPencil /></button>
+                  <button onClick={() => {deleteData(dbdata.Q_ID)}}><BsTrash3 /></button>
+                </div>
+              }
             </List>
           );
         })}
