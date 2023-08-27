@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+    const router = useRouter();
     interface Users{
         USER_ID : number,
         EMAIL : string,
@@ -58,7 +60,11 @@ export default function Home() {
             </MenuNavbar>
             <QTable>
                 {content && content.map((a:any, i:number) => 
-                    <QRow key={i}><th style={{paddingLeft: '2rem', fontWeight: '400'}}>{a.CONTENT}</th></QRow>
+                    <QRow key={i}>
+                        <th onClick={()=>{router.push(`/detail/${a.Q_ID}`)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
+                            {a.CONTENT}
+                        </th>
+                    </QRow>
                 )}
             </QTable>
         </Container>
