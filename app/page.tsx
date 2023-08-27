@@ -134,14 +134,18 @@ export default function Home() {
         >
           🎤
         </RecordButton>
-        <form onSubmit={handleSubmit}>
+        <form 
+          onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
+            handleSubmit(e); // chatGPT에게 질문
+            insertData(); // 질문, 답변 데이터 DB에 삽입
+          }}>
           <ChatInput
             placeholder="변수명 추천을 받아보세요!"
             // className="w-full max-w-md border border-gray-300 rounded mb-8 shadow-xl p-2"
             value={input}
             onChange={handleInputChange}
           />
-          <button type="submit" onClick={insertData}>제출</button>
+          <button type="submit">제출</button>
         </form>
         <Response>
           <img src="/imgs/chatgpt.png" alt="chat gpt" style={{width: '5rem', height: '5rem'}}/>
