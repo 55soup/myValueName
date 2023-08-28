@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     // user_id WHERE 조건이 있을 경우
-    const query:string = `SELECT * FROM GPT_QUESTIONS ORDER BY Q_ID WHERE user_id=2`;
+    const user_id = 2;
+    const query:string = `SELECT * FROM GPT_QUESTIONS WHERE user_id=${user_id} ORDER BY Q_ID `;
     return connectionDB(query);
 }
 
