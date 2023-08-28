@@ -121,7 +121,7 @@ export default function Home() {
         })}
       </LeftSidebar>
       <HamburgerBtn onClick={()=>{setIsOpen(isOpen ? false : true)}}><RxHamburgerMenu size={30}/></HamburgerBtn>
-      <Link href="/login"><AiOutlineUser size={30} style={{position: 'relative', float: 'right', margin: '2vw 4vw'}} /></Link>
+      <Link href="/mypage"><AiOutlineUser size={30} style={{position: 'relative', float: 'right', margin: '2vw 4vw'}} /></Link>
       <RightSidebar isOpen={isOpen}>
         <img src={"/imgs/logo-big.png"} style={{position: 'absolute', top: 0}} width={250}/>
         <div>{listening && 'REC'}</div>

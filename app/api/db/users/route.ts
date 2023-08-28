@@ -19,7 +19,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     let connection
     try {
         connection = await oracledb.getConnection(dbconfig);
-        const query = `SELECT EMAIL, PASSWORD FROM USERS WHERE TRIM(EMAIL)=:EMAIL`; // 이메일 공백제거 후 조건부
+        const query = `SELECT USER_ID, EMAIL, PASSWORD FROM USERS WHERE TRIM(EMAIL)=:EMAIL`; // 이메일 공백제거 후 조건부
         const result = await connection.execute(query, [email], (err:any, result:any) => {
             if(err){
                 console.error(err.message);
@@ -31,7 +31,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
                     if(password == userInfo.PASSWORD.trim()) {
                         // 로그인 성공
                         returnJSON = {
-                            status : 200, 
+                            status : 200,
+                            user_id: userInfo.USER_ID, 
                             headers: {'Content-Type': 'application/json'},
                             statusMessage : "login success"
                         };  

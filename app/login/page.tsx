@@ -10,14 +10,18 @@ export default function Login() {
 
     interface resMess {
         status: number,
+        user_id: number,
         header: Object,
         statusMessage: string
     }
 
     const toMain = (res:resMess) => {
         console.log(res);
-        if(res.status === 200)
+        if(res.status === 200){
             router.push('/mypage');
+            //임시
+            sessionStorage.setItem("user_id", res.user_id);
+        }
         else
             alert(`로그인에 실패하였습니다. ${res.statusMessage}`);
     }
