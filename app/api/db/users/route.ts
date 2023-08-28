@@ -6,7 +6,7 @@ import dbconfig from "@/app/assets/dbconfig";
 const oracledb = require('oracledb')
 
 export async function GET() {
-    const query = `SELECT * FROM users`;
+    const query = `SELECT * FROM USERINFO`; // VIEW 불러오기
     return connectionDB(query);
 }
 

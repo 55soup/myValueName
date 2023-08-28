@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
     const router = useRouter();
+    
     interface Users{
         USER_ID : number,
         EMAIL : string,
@@ -26,12 +27,40 @@ export default function Home() {
     
     const [userData, setUserData] = useState<Users>({});
     const [content, setContent]  = useState();
+    const [QCount, setQCount] = useState();
+    const selectList = ["가나다순", "날짜순"];
+    const [selected, setSelected] = useState<string>("가나다순");
+
+    const handleSelect = (e) => {
+        setSelected(e.target.value);
+        if(selected !== "가나다순"){
+            content?.sort((a:any, b:any) => {
+                if(a.CONTENT > b.CONTENT) return 1;
+                else if(a.CONTENT < b.CONTENT) return -1;
+                else return 0;
+            })
+        }
+        else if(selected !== "날짜순"){
+            content?.sort((a:any, b:any) => {
+                return a.Q_ID - b.Q_ID;
+            })
+        }
+    }
 
     useEffect(()=>{
         fetch('/api/db/mypage')
         .then((res) => res.json())
         .then((data) => {setUserData(data[0]); setContent(data);});
+
+        fetch('/api/db/mypage/count_q')
+        .then((res) => res.json())
+        .then((data) => {setQCount(data[0].COUNT_QUESTIONS)});
     }, []);
+
+    const toDetail = (data:any) => {
+        // router.push({pathname: `/detail/${data.Q_ID}`, query : {data:data}})
+        router.push(`/detail/${data.Q_ID}`);
+    }
 
     return(
         <Container>
@@ -44,24 +73,25 @@ export default function Home() {
                     </div>
                     <Info>가입일: {userData.JOIN_DATE}</Info>
                     <br />
-                    <AccentInfp>총 <strong>4번</strong> 질문했어요!</AccentInfp>
-                    <AccentInfp>다른 유저들보다 평균 <string>2번</string> 더 질문했어요!</AccentInfp>
+                    <AccentInfp>총 <strong>{QCount}번</strong> 질문했어요!</AccentInfp>
+                    <AccentInfp>다른 유저들보다 평균 <strong>2번</strong> 더 질문했어요!</AccentInfp>
                 </div>
             </ProfileCont>
             <MenuNavbar>
                 <div style={{fontWeight: 'bold', fontSize: '1.2vw', marginTop: '5rem' }}>내가 지은 변수명들</div>
                 <div style={{marginLeft: 'auto'}}>
                     <label>질문 정렬: </label> 
-                    <select name="dog-names" id="dog-names"> 
-                        <option value="rigatoni">날짜순</option> 
-                        <option value="dave">가나다순</option> 
+                    <select onChange={handleSelect} value={selected} name="dog-names" id="dog-names">
+                        {selectList.map((item) => 
+                            <option value={item}>{item}</option> 
+                        )}
                     </select>
                 </div>
             </MenuNavbar>
             <QTable>
                 {content && content.map((a:any, i:number) => 
                     <QRow key={i}>
-                        <th onClick={()=>{router.push(`/detail/${a.Q_ID}`)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
+                        <th onClick={()=>{toDetail(a)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
                             {a.CONTENT}
                         </th>
                     </QRow>

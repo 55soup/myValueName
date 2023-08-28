@@ -17,7 +17,7 @@ export default function Login() {
     const toMain = (res:resMess) => {
         console.log(res);
         if(res.status === 200)
-            router.push('/');
+            router.push('/mypage');
         else
             alert(`로그인에 실패하였습니다. ${res.statusMessage}`);
     }
