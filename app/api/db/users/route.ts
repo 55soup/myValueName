@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { redirect } from 'next/navigation'
 import connectionDB from "../dbConn";
 import dbconfig from "@/app/assets/dbconfig";
+import { cookies } from 'next/headers';
 
 const oracledb = require('oracledb')
 
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
                 if(userInfo !== undefined) {// 계정이 있다면
                     if(password == userInfo.PASSWORD.trim()) {
                         // 로그인 성공
+                        cookies().set('user_id', userInfo.USER_ID, { secure: true })
                         returnJSON = {
                             status : 200,
                             user_id: userInfo.USER_ID, 

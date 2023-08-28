@@ -48,6 +48,7 @@ export default function Home() {
     }
 
     useEffect(()=>{
+        console.log(sessionStorage.getItem("user_id"));
         fetch('/api/db/mypage')
         .then((res) => res.json())
         .then((data) => {setUserData(data[0]); setContent(data);});
