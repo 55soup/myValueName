@@ -139,7 +139,9 @@ export default function Home() {
         <form 
           onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
             handleSubmit(e); // chatGPT에게 질문
-            insertData(); // 질문, 답변 데이터 DB에 삽입
+            setTimeout(() => {
+              insertData(); // 질문, 답변 데이터 DB에 삽입
+            }, 2000);
           }}>
           <ChatInput
             placeholder="변수명 추천을 받아보세요!"
