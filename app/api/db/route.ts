@@ -11,7 +11,6 @@ export async function GET() {
 
 export async function POST(request: Request) {
     const bodyData = await request.json();
-    console.log(bodyData);
 
     const bindData = [
         Number(bodyData.user_id),

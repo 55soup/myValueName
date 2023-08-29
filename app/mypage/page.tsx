@@ -51,7 +51,11 @@ export default function Home() {
     useEffect(()=>{
         fetch('/api/db/mypage')
         .then((res) => res.json())
-        .then((data) => {setUserData(data[0]); setContent(data);});
+        .then((data) => {setUserData(data[0]);});
+
+        fetch('/api/db')
+        .then((res) => res.json())
+        .then((data) => setContent(data))
 
         fetch('/api/db/mypage/count_q')
         .then((res) => res.json())
