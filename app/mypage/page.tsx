@@ -43,13 +43,12 @@ export default function Home() {
         }
         else if(selected !== "날짜순"){
             content?.sort((a:any, b:any) => {
-                return a.Q_ID - b.Q_ID;
+                return b.Q_ID - a.Q_ID;
             })
         }
     }
 
     useEffect(()=>{
-        console.log(sessionStorage.getItem("user_id"));
         fetch('/api/db/mypage')
         .then((res) => res.json())
         .then((data) => {setUserData(data[0]); setContent(data);});
@@ -69,7 +68,7 @@ export default function Home() {
             <FiArrowLeft size={30} onClick={()=>{router.push("/")}} style={{margin: '2rem'}} />
             <Container>
                 <ProfileCont>
-                    <Profile />
+                    <Profile imgUrl={userData.PROFILE_PHOTO}/>
                     <div>
                         <div style={{display: 'flex', gap: '1rem', alignItems: 'baseline'}}>
                             <Nickname>{userData.NICKNAME}</Nickname>
@@ -98,6 +97,9 @@ export default function Home() {
                             <th onClick={()=>{toDetail(a)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
                                 {a.CONTENT}
                             </th>
+                            <DateColumn>
+                                {a.DATES}
+                            </DateColumn>
                         </QRow>
                     )}
                 </QTable>
@@ -113,11 +115,12 @@ const ProfileCont = styled.div`
     display: flex;
     gap: 5rem;
 `
-const Profile = styled.div`
+const Profile = styled.div<{imgUrl:string}>`
     width: 15vw; height: 15vw;
     border-radius: 20rem;
     background: red;
-    `
+    background: url(${({imgUrl}) => imgUrl}) no-repeat center/cover;
+`
 const Nickname = styled.div`
     font-size: 4vw;
     font-weight: bold;
@@ -152,4 +155,11 @@ const QRow = styled.tr`
     &:nth-child(2n){
         background: var(--main-color);
     }
+`
+
+const DateColumn = styled.th`
+    color: var(--grey-color);
+    font-weight: 400;
+    text-align: right;
+    padding-right: 2rem;
 `
