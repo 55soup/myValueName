@@ -28,11 +28,12 @@ export default function Home() {
     
     const [userData, setUserData] = useState<Users>({});
     const [content, setContent]  = useState();
-    const [QCount, setQCount] = useState();
+    const [QCount, setQCount] = useState<Number>();
+    const [QAvgMess, setQAvgMess] = useState<String>('');
     const selectList = ["가나다순", "날짜순"];
     const [selected, setSelected] = useState<string>("가나다순");
 
-    const handleSelect = (e) => {
+    const handleSelect = (e:React.ChangeEvent<HTMLInputElement>) => {
         setSelected(e.target.value);
         if(selected !== "가나다순"){
             content?.sort((a:any, b:any) => {
@@ -48,6 +49,16 @@ export default function Home() {
         }
     }
 
+    const getAvgMess = (qCount:number, qAvg:number):void => {
+        console.log(`qcount: ${qCount}`);
+        console.log(`qAvg: ${qAvg}`);
+        if(qCount-qAvg > 0){ // 다른 유저들보다 질문을 많이 함.
+            setQAvgMess(`${qCount-qAvg}번 더 질문했어요!`);
+        }else{
+            setQAvgMess(`${qAvg-qCount}번 덜 질문했어요!`);
+        }
+    }
+
     useEffect(()=>{
         fetch('/api/db/mypage')
         .then((res) => res.json())
@@ -59,7 +70,16 @@ export default function Home() {
 
         fetch('/api/db/mypage/count_q')
         .then((res) => res.json())
-        .then((data) => {setQCount(data[0].COUNT_QUESTIONS)});
+        .then((QCOUNT) => {
+            setQCount(QCOUNT[0].COUNT_QUESTIONS);
+            fetch('/api/db/mypage/avg_q')
+            .then((res) => res.json())
+            .then((QAVG) => {getAvgMess(QCOUNT[0].COUNT_QUESTIONS, QAVG[0].AVG_QUESTIONS)})
+        })
+
+        // fetch('/api/db/mypage/avg_q')
+        // .then((res) => res.json())
+        // .then((data) => {getAvgMess(data[0].AVG_QUESTIONS)})
     }, []);
 
     const toDetail = (data:any) => {
@@ -84,7 +104,7 @@ export default function Home() {
                         <Info>가입일: {userData.JOIN_DATE}</Info>
                         <br />
                         <AccentInfp>총 <strong>{QCount}번</strong> 질문했어요!</AccentInfp>
-                        <AccentInfp>다른 유저들보다 평균 <strong>2번</strong> 더 질문했어요!</AccentInfp>
+                        <AccentInfp>다른 유저들보다 평균 <strong>{QAvgMess}</strong></AccentInfp>
                     </div>
                 </ProfileCont>
                 <MenuNavbar>
