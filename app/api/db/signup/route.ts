@@ -1,15 +1,16 @@
 import connectionDB from "../dbConn";
 
-export async function POST(){
-    // mypage 정보 가져오기
-    // const hasSession = typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
+export async function POST(request: Request){
+    const bodyData = await request.json();
 
-    // cookies에 있는 user_id 가져오기
-    const user_id = getCookies();
-    const query = `SELECT user_id, q_id, content, answer, dates, nickname, email, profile_photo, join_date
-    FROM gpt_questions NATURAL JOIN users
-    WHERE USER_ID=${user_id}`;
+    const bindData = [
+        bodyData.nickname,
+        bodyData.email,
+        bodyData.join_date,
+        bodyData.password
+    ];
 
-    // const query = `SELECT content, answer FROM gpt_questions WHERE USER_ID=${user_id} ORDER BY dates`;
-    return connectionDB(query);
+    const query = `INSERT INTO "SUNJO"."USERS" (NICKNAME, EMAIL, JOIN_DATE, PASSWORD) VALUES (:nickname, :email, :join_date, :password)`;
+
+    return connectionDB(query, bindData);
 }

@@ -30,7 +30,7 @@ export default function Login() {
             headers: {
               'Content-type': 'application/json',
             },
-            body: JSON.stringify({ email : email, password : password }),
+            body: JSON.stringify({ email : email.trim(), password : password.trim() }),
           })
           .then((res) => 
             res.json()
