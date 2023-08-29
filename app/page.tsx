@@ -6,7 +6,8 @@ import { useCompletion } from "ai/react"
 import { RxHamburgerMenu } from "react-icons/rx"; 
 import { AiOutlineUser } from "react-icons/ai";
 import { BsPencil, BsTrash3 } from "react-icons/bs";
-import Link from 'next/link'
+import Link from 'next/link';
+import cookieCutter from 'cookie-cutter';
 
 export default function Home() {
   
@@ -47,13 +48,14 @@ export default function Home() {
   }, [dbdatas]);
 
   const insertData = () => {
+    const user_id = cookieCutter.get('user_id');
     if(completion!=''){
       fetch('/api/db', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
-        body: JSON.stringify({ user_id:2, content: input, answer: completion, dates: new Date().toDateString() }),
+        body: JSON.stringify({ user_id: user_id, content: input, answer: completion, dates: new Date().toDateString() }),
       })
       .then((res) => res.json())
     }

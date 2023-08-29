@@ -10,7 +10,7 @@ export default function Home() {
     const [data, setData] = useState();
 
     useEffect(()=>{
-        fetch('/api/db/mypage')
+        fetch('/api/db/')
         .then((res) => res.json())
         .then((datas) => {
             datas.forEach((data:any) => {

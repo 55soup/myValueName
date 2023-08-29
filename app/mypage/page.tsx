@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { FiArrowLeft } from "react-icons/fi"
+import { FiArrowLeft, FiLogOut } from "react-icons/fi"
 
 export default function Home() {
     const router = useRouter();
@@ -69,7 +69,10 @@ export default function Home() {
 
     return(
         <>
-            <FiArrowLeft size={30} onClick={()=>{router.push("/")}} style={{margin: '2rem'}} />
+            <Navbar>
+                <FiArrowLeft size={30} onClick={()=>{router.push("/")}}/>
+                <FiLogOut style={{marginLeft: 'auto'}} size={30} onClick={()=>{router.push("/login")}}/>
+            </Navbar>
             <Container>
                 <ProfileCont>
                     <Profile imgUrl={userData.PROFILE_PHOTO}/>
@@ -118,7 +121,11 @@ const Container = styled.div`
 const ProfileCont = styled.div`
     display: flex;
     gap: 5rem;
-`
+`;
+const Navbar = styled.div`
+    display: flex;
+    margin: 2rem 5rem;
+`;
 const Profile = styled.div<{imgUrl:string}>`
     width: 15vw; height: 15vw;
     border-radius: 20rem;
@@ -160,7 +167,6 @@ const QRow = styled.tr`
         background: var(--main-color);
     }
 `
-
 const DateColumn = styled.th`
     color: var(--grey-color);
     font-weight: 400;
