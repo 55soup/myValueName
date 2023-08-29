@@ -1,9 +1,10 @@
 import connectionDB from "./dbConn";
 import { NextResponse } from "next/server";
+import getCookies from "./getCookies";
 
 export async function GET() {
     // user_id WHERE 조건이 있을 경우
-    const user_id = 2;
+    const user_id = getCookies();
     const query:string = `SELECT * FROM GPT_QUESTIONS WHERE user_id=${user_id} ORDER BY Q_ID `;
     return connectionDB(query);
 }

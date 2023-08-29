@@ -3,12 +3,10 @@ import type { NextRequest } from 'next/server';
 
 // This function can be marked `async` if using `await` inside
 export default function middleware(request: NextRequest) {
-    let hasSession;
-    if(typeof window !== 'undefined'){
-      hasSession = sessionStorage.getItem('user_id');
-    }
-    if(hasSession === null) // session이 없는 경우 login으로 이동
-        return NextResponse.redirect(new URL('/login', request.url)); 
+    const hasCookie = request.cookies.get('user_id'); // user_id cookie값이 존재하는가?
+
+    if(!hasCookie)
+      return NextResponse.redirect(new URL('/login', request.url)); 
 }
 
 export const config = {
