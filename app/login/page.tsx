@@ -47,6 +47,7 @@ export default function Login() {
             <Input name="email" placeholder="이메일" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
             <Input name="password" type="password" placeholder="비밀번호" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
             <LoginBtn onClick={loginSubmit}>로그인</LoginBtn>
+            <h2 style={{cursor: 'pointer'}} onClick={()=>{router.push('/signup')}}>회원가입 하기</h2>
         </Container>
     );
 }
@@ -72,5 +73,4 @@ const LoginBtn = styled.button`
     border-radius: 10px;
     font-size: 2vw;
     color: white;
-
 `

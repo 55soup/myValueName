@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
+import { FiArrowLeft } from "react-icons/fi"
 
 export default function Home() {
     const router = useRouter();
@@ -64,41 +65,44 @@ export default function Home() {
     }
 
     return(
-        <Container>
-            <ProfileCont>
-                <Profile />
-                <div>
-                    <div style={{display: 'flex', gap: '1rem', alignItems: 'baseline'}}>
-                        <Nickname>{userData.NICKNAME}</Nickname>
-                        <Info>@{userData.USER_ID}</Info>
+        <>
+            <FiArrowLeft size={30} onClick={()=>{router.push("/")}} style={{margin: '2rem'}} />
+            <Container>
+                <ProfileCont>
+                    <Profile />
+                    <div>
+                        <div style={{display: 'flex', gap: '1rem', alignItems: 'baseline'}}>
+                            <Nickname>{userData.NICKNAME}</Nickname>
+                            <Info>@{userData.USER_ID}</Info>
+                        </div>
+                        <Info>가입일: {userData.JOIN_DATE}</Info>
+                        <br />
+                        <AccentInfp>총 <strong>{QCount}번</strong> 질문했어요!</AccentInfp>
+                        <AccentInfp>다른 유저들보다 평균 <strong>2번</strong> 더 질문했어요!</AccentInfp>
                     </div>
-                    <Info>가입일: {userData.JOIN_DATE}</Info>
-                    <br />
-                    <AccentInfp>총 <strong>{QCount}번</strong> 질문했어요!</AccentInfp>
-                    <AccentInfp>다른 유저들보다 평균 <strong>2번</strong> 더 질문했어요!</AccentInfp>
-                </div>
-            </ProfileCont>
-            <MenuNavbar>
-                <div style={{fontWeight: 'bold', fontSize: '1.2vw', marginTop: '5rem' }}>내가 지은 변수명들</div>
-                <div style={{marginLeft: 'auto'}}>
-                    <label>질문 정렬: </label> 
-                    <select onChange={handleSelect} value={selected} name="dog-names" id="dog-names">
-                        {selectList.map((item) => 
-                            <option value={item}>{item}</option> 
-                        )}
-                    </select>
-                </div>
-            </MenuNavbar>
-            <QTable>
-                {content && content.map((a:any, i:number) => 
-                    <QRow key={i}>
-                        <th onClick={()=>{toDetail(a)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
-                            {a.CONTENT}
-                        </th>
-                    </QRow>
-                )}
-            </QTable>
-        </Container>
+                </ProfileCont>
+                <MenuNavbar>
+                    <div style={{fontWeight: 'bold', fontSize: '1.2vw', marginTop: '5rem' }}>내가 지은 변수명들</div>
+                    <div style={{marginLeft: 'auto'}}>
+                        <label>질문 정렬: </label> 
+                        <select onChange={handleSelect} value={selected} name="dog-names" id="dog-names">
+                            {selectList.map((item) => 
+                                <option value={item}>{item}</option> 
+                            )}
+                        </select>
+                    </div>
+                </MenuNavbar>
+                <QTable>
+                    {content && content.map((a:any, i:number) => 
+                        <QRow key={i}>
+                            <th onClick={()=>{toDetail(a)}} style={{paddingLeft: '2rem', fontWeight: '400'}}>
+                                {a.CONTENT}
+                            </th>
+                        </QRow>
+                    )}
+                </QTable>
+            </Container>
+        </>
     )
 }
 
