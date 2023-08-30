@@ -31,7 +31,7 @@ export default function Home() {
     const [QCount, setQCount] = useState<Number>();
     const [QAvgMess, setQAvgMess] = useState<String>('');
     const selectList = ["가나다순", "날짜순"];
-    const [selected, setSelected] = useState<string>("가나다순");
+    const [selected, setSelected] = useState<String>("날짜순");
 
     const handleSelect = (e:React.ChangeEvent<HTMLInputElement>) => {
         setSelected(e.target.value);
