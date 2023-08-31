@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# 💚(v-v) various-variable
+### ChatGPT가 지어주는 변수명 - (학교 DBP과목 프로젝트)
+### [🔗기획서 보러가기](https://www.canva.com/design/DAFqRk2m3H8/adpLgxOymJV18aViM0C78g/view?utm_content=DAFqRk2m3H8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
+<div>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
+  <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white">
+  <img src="https://img.shields.io/badge/AmazonRDS-527fff?style=for-the-badge&logo=Amazon RDS&logoColor=white">
+  <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=OpenAI&logoColor=white">
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br />
+<br />
+<br />
+<br />
 
-## Available Scripts
+## 🛠기능
+### 🔒회원가입
+- 📌사용 SQL문
+```SQL
+INSERT INTO "USERS" (NICKNAME, EMAIL, JOIN_DATE, PASSWORD) VALUES (:nickname, :email, :join_date, :password)
+```
+- __비밀번호 확인과 일치 하지 않으면 회원가입이 되지 않습니다.__
 
-In the project directory, you can run:
+![image](https://github.com/55soup/various-variable-name/assets/86298664/209d1daf-5198-4d77-9ad0-d08597c16690)
 
-### `npm start`
+<br />
+<br />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🔑로그인
+- 📌사용 SQL문
+```SQL
+SELECT EMAIL, PASSWORD FROM USERS WHERE TRIM(EMAIL)=:EMAIL
+```
+- **이메일로 사용자가 존재하는지 확인**합니다.
+- __사용자가 없거나, 비밀번호가 일치하지 않으면 로그인 되지 않습니다.__
+- 로그인 후 __쿠키에 USER_ID가 저장__됩니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![image](https://github.com/55soup/various-variable-name/assets/86298664/e1321233-0c87-479b-b676-67abbfcef6b6)
 
-### `npm test`
+<br />
+<br />
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🎤speech-to-text ChatGPT에게 질문
+- __ChatGPT에게 말로 질문을 할 수 있습니다.__
+- ChatGPT는 __openAI 패키지__를 활용하여 프롬프트를 작성하였습니다.
 
-### `npm run build`
+프롬프트 내용의 예시는 다음과 같습니다.
+```javascript
+Variable: 햄버거 타이쿤 게임에서 요리사 캐릭터 객체를 만들건데, 카멜케이스로 변수 이름 추천해줘.
+  Names: chatName, burgerSpecialist, HambugerShaf
+Variable: 옷입히기 캐릭터의 오브젝트 변수 이름을 스네일케이스로 추천해줘
+  Names: character_outfit, clothing_items, dress_up_object
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![image](https://github.com/55soup/various-variable-name/assets/86298664/762b4478-6626-4886-9ced-38bf6543e0ca)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br />
+<br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🖨ChatGPT 답변 CRUD
+📌사용 SQL문
+- Create
+```SQL
+  INSERT INTO "GPT_QUESTIONS" (USER_ID, CONTENT, ANSWER, DATES) VALUES (:user_id, :content, :answer, :dates)
+```
+- Read
+```SQL
+  SELECT * FROM "GPT_QUESTIONS" ORDER BY q_id; WHERE usere_id=:user_id
+```
+- Update
+```SQL
+  UPDATE "GPT_QUESTIONS" SET content=:content WHERE Q_ID=:q_id
+```
 
-### `npm run eject`
+- Delete
+```SQL
+  DELETE FROM "GPT_QUESTIONS" WHERE Q_ID=:q_id
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**ChatGPT에게 한 질문, 답변을 생성/조회/수정/삭제 가능합니다.**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![image](https://github.com/55soup/various-variable-name/assets/86298664/22355a8e-4a36-4727-aba5-54885053a8c4)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<br />
+<br />
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 🧒마이페이지
+- 📌사용 SQL문
+```SQL
+SELECT content, answer FROM "GPT_QUESTIONS" WHERE user_id = :user_id ORDER BY dates;
+```
+```SQL
+SELECT * FROM users NATURAL JOIN gpt_questions WHERE user_id=:user_id;
+```
 
-## Learn More
+![image](https://github.com/55soup/various-variable-name/assets/86298664/5a7c76ef-1bff-4300-a25d-a2d7ff7a2ad4)
+<br />
+<br />
+<br />
+<br />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🎞서비스 화면
+| 메인화면 | 회원가입 | 로그인 | 마이페이지 |
+|---|---|---|---|
+|![image](https://github.com/55soup/various-variable-name/assets/86298664/22355a8e-4a36-4727-aba5-54885053a8c4)|![image](https://github.com/55soup/various-variable-name/assets/86298664/209d1daf-5198-4d77-9ad0-d08597c16690)|![image](https://github.com/55soup/various-variable-name/assets/86298664/e1321233-0c87-479b-b676-67abbfcef6b6)|![image](https://github.com/55soup/various-variable-name/assets/86298664/5a7c76ef-1bff-4300-a25d-a2d7ff7a2ad4)|
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br />
+<br />
