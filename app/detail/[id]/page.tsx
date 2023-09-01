@@ -7,7 +7,14 @@ export default function Home() {
     const params = useParams();
     // console.log(router.query.data);
 
-    const [data, setData] = useState();
+    interface Data{
+        USER_ID: number,
+        Q_ID: number,
+        CONTENT: string,
+        ANSWER: string,
+        DATES: string
+    }
+    const [data, setData] = useState<Data>();
 
     useEffect(()=>{
         fetch('/api/db/')

@@ -23,27 +23,28 @@ export default function Home() {
         EMAIL : string,
         JOIN_DATE : string,
         NICKNAME : string,
-        PROFILE_PHOTO : string
+        PROFILE_PHOTO : string,
     }
     
     const [userData, setUserData] = useState<Users>({});
-    const [content, setContent]  = useState();
+    const [content, setContent]  = useState<Content>();
     const [QCount, setQCount] = useState<Number>();
     const [QAvgMess, setQAvgMess] = useState<String>('');
-    const selectList = ["가나다순", "날짜순"];
+
+    const selectList:string[] = ["가나다순", "날짜순"];
     const [selected, setSelected] = useState<String>("날짜순");
 
-    const handleSelect = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (e:React.ChangeEvent<HTMLSelectElement>) => {
         setSelected(e.target.value);
         if(selected !== "가나다순"){
-            content?.sort((a:any, b:any) => {
+            content?.sort((a:Content, b:Content) => {
                 if(a.CONTENT > b.CONTENT) return 1;
                 else if(a.CONTENT < b.CONTENT) return -1;
                 else return 0;
             })
         }
         else if(selected !== "날짜순"){
-            content?.sort((a:any, b:any) => {
+            content?.sort((a:Content, b:Content) => {
                 return b.Q_ID - a.Q_ID;
             })
         }
@@ -82,7 +83,7 @@ export default function Home() {
         // .then((data) => {getAvgMess(data[0].AVG_QUESTIONS)})
     }, []);
 
-    const toDetail = (data:any) => {
+    const toDetail = (data:Content) => {
         // router.push({pathname: `/detail/${data.Q_ID}`, query : {data:data}})
         router.push(`/detail/${data.Q_ID}`);
     }
